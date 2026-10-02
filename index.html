@@ -9,7 +9,58 @@
     <script src="app.js" defer></script>
   </head>
   <body>
-    <div class="app-shell">
+    <main class="entry-page" id="entry-page">
+      <section class="entry-card" aria-labelledby="entry-title">
+        <div class="entry-intro">
+          <a class="brand entry-brand" href="#" aria-label="StudySense home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none"><path d="m5 24.5 7.2-7.5 5.1 4.1L27 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M20.5 9H27v6.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+            <span>study<span class="brand-light">sense</span></span>
+          </a>
+          <div class="entry-art" aria-hidden="true">
+            <div class="entry-art-card">
+              <span class="entry-art-label">YOUR NEXT CHAPTER</span>
+              <span class="entry-art-title">Make every<br />study session count.</span>
+              <span class="entry-art-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              <span class="entry-art-caption">Your progress starts here <span>↗</span></span>
+            </div>
+            <span class="entry-sparkle entry-sparkle-one">✳</span>
+            <span class="entry-sparkle entry-sparkle-two">✦</span>
+          </div>
+          <p class="entry-tagline">A little progress each day adds up to big results.</p>
+        </div>
+
+        <div class="entry-form-wrap">
+          <span class="entry-step">LET’S GET STARTED</span>
+          <h1 id="entry-title">Create your student profile</h1>
+          <p class="entry-description">Add your details to open your personalized learning dashboard.</p>
+          <form id="entry-form">
+            <label class="entry-field" for="student-name">
+              <span>Full name</span>
+              <input id="student-name" name="name" type="text" autocomplete="name" placeholder="e.g. Alex Morgan" minlength="2" maxlength="80" required />
+            </label>
+            <label class="entry-field" for="student-phone">
+              <span>Phone number</span>
+              <input id="student-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="e.g. +1 555 123 4567" required />
+            </label>
+            <label class="entry-field" for="student-email">
+              <span>Email address</span>
+              <input id="student-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required />
+            </label>
+            <label class="entry-field" for="student-pin">
+              <span>Create a PIN</span>
+              <input id="student-pin" name="pin" type="password" autocomplete="new-password" inputmode="numeric" pattern="[0-9]{4,6}" minlength="4" maxlength="6" placeholder="Choose 4–6 digits" title="Your PIN must be 4 to 6 digits." required />
+            </label>
+            <p class="entry-privacy">Your profile stays in this browser session. Your PIN is never saved.</p>
+            <p class="entry-error" id="entry-error" role="alert" hidden></p>
+            <button class="entry-submit" type="submit">Open my dashboard <span aria-hidden="true">→</span></button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div class="app-shell" id="app-shell" hidden>
       <aside class="sidebar" aria-label="Main navigation">
         <a class="brand" href="#overview" aria-label="StudySense home">
           <span class="brand-mark" aria-hidden="true">
@@ -31,8 +82,8 @@
             <a href="#insights">Explore insights <span aria-hidden="true">→</span></a>
           </div>
           <div class="profile">
-            <div class="avatar" aria-hidden="true">AY</div>
-            <div class="profile-text"><strong>Aryan Yadav</strong><span>Year 1 · Data Science</span></div>
+            <div class="avatar" id="profile-avatar" aria-hidden="true">ST</div>
+            <div class="profile-text"><strong id="profile-name">Student</strong><span>Year 1 · Data Science</span></div>
             <button class="more-button" type="button" aria-label="Profile options">···</button>
           </div>
         </div>
@@ -53,7 +104,7 @@
           <section class="welcome-row" aria-labelledby="page-title">
             <div>
               <div class="eyebrow"><span class="eyebrow-line"></span> YOUR LEARNING, IN FOCUS</div>
-              <h1 id="page-title"><span id="greeting">Good morning</span>, Aryan <span aria-hidden="true">☀️</span></h1>
+              <h1 id="page-title"><span id="greeting">Good morning</span>, <span id="user-name">Student</span> <span aria-hidden="true">☀️</span></h1>
               <p class="page-subtitle" id="greeting-note">Every study session is a step forward. Here’s your learning snapshot.</p>
             </div>
             <button class="export-button" id="export-button" type="button">

@@ -30,12 +30,90 @@ const periodData = {
 
 const chartElement = document.querySelector("#line-chart");
 const periodSelect = document.querySelector("#period-select");
+const entryPage = document.querySelector("#entry-page");
+const appShell = document.querySelector("#app-shell");
+const entryForm = document.querySelector("#entry-form");
+const entryError = document.querySelector("#entry-error");
+const profileStorageKey = "studysense-profile";
 
 function updateGreeting() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
   document.querySelector("#greeting").textContent = greeting;
 }
+
+function showDashboard(profile) {
+  document.querySelector("#user-name").textContent = profile.name;
+  document.querySelector("#profile-name").textContent = profile.name;
+  document.querySelector("#profile-avatar").textContent = profile.name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("");
+  updateGreeting();
+  entryPage.hidden = true;
+  appShell.hidden = false;
+}
+
+function showEntryError(message) {
+  entryError.textContent = message;
+  entryError.hidden = false;
+}
+
+try {
+  const savedProfile = sessionStorage.getItem(profileStorageKey);
+  if (savedProfile) {
+    const profile = JSON.parse(savedProfile);
+    if (typeof profile.name !== "string" || !profile.name.trim()) {
+      throw new Error("Saved profile has no valid name.");
+    }
+    showDashboard(profile);
+  }
+} catch {
+  showEntryError("Your profile could not be loaded from this browser session. Please enter your details again.");
+}
+
+entryForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!entryForm.reportValidity()) {
+    return;
+  }
+
+  const formData = new FormData(entryForm);
+  const profile = {
+    name: formData.get("name").trim(),
+    phone: formData.get("phone").trim(),
+    email: formData.get("email").trim(),
+  };
+  const phoneDigits = profile.phone.replace(/\D/g, "");
+
+  if (!profile.name) {
+    showEntryError("Please enter your name.");
+    document.querySelector("#student-name").focus();
+    return;
+  }
+
+  if (!/^[0-9+()\s-]{7,20}$/.test(profile.phone) || phoneDigits.length < 7 || phoneDigits.length > 15) {
+    showEntryError("Enter a valid phone number with 7 to 15 digits.");
+    document.querySelector("#student-phone").focus();
+    return;
+  }
+
+  try {
+    sessionStorage.setItem(profileStorageKey, JSON.stringify(profile));
+  } catch {
+    showEntryError("Your browser couldn't save this session. Please enable session storage and try again.");
+    return;
+  }
+
+  entryError.hidden = true;
+  showDashboard(profile);
+});
+
+entryForm.addEventListener("input", () => {
+  entryError.hidden = true;
+});
 
 function createChart(labels, scores) {
   const width = 600;
@@ -117,5 +195,4 @@ document.querySelector("#export-button").addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
-updateGreeting();
 updateDashboard(periodSelect.value);
